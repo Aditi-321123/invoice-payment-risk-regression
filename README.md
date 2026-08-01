@@ -1,57 +1,60 @@
-# Invoice Payment Risk Regression
+# 📈 Invoice Payment Risk Regression
 
 An end-to-end regression project that predicts invoice **days past due (`dpd_target`)** using customer, invoice, payment-history, and behavioural features.
 
-## Business objective
+---
 
-Accurately estimating payment delay can help collections and finance teams prioritise follow-ups, forecast cash flow, and identify invoices that may require early intervention.
+## 🎯 Business Objective
 
-## Modelling approaches
+Accurately estimating invoice payment delay can help collections and finance teams:
 
-This project compares two approaches:
+- Prioritise follow-ups
+- Forecast cash flow more effectively
+- Identify invoices that may require early intervention
+- Improve collection planning
 
-### Approach A — Original target
+---
 
-Models are trained directly on `dpd_target`.
+## 📊 Modelling Approaches
 
-Models evaluated:
+### Approach A — Original Target
 
-- Linear Regression
-- LightGBM
-- XGBoost
-- Random Forest
+Regression models are trained directly on the original `dpd_target`.
 
-### Approach B — Yeo–Johnson transformed target
+### Approach B — Yeo–Johnson Transformed Target
 
-The target is transformed using Yeo–Johnson before modelling. The transformer is fitted on the training target and applied to the test target.
+A Yeo–Johnson transformation is applied to the target variable before modelling to evaluate whether reducing target skew improves predictive performance.
 
-Models evaluated:
+The transformer is fitted on the training target and then applied to the test target.
 
-- Linear Regression
-- LightGBM
+---
 
-## Project workflow
+## 📂 Project Workflow
 
-- Data loading and inspection
-- Target analysis
-- Identifier and date-variable removal
-- High-missing-variable removal
-- Low-variance filtering
-- Correlation analysis
-- VIF analysis
-- Feature selection
-- Missing-value treatment
-- Outlier treatment
-- Linear Regression baseline
-- LightGBM regression
-- XGBoost regression
-- Random Forest regression
-- Yeo–Johnson target transformation
-- Model comparison
+- Data Loading and Inspection
+- Target Analysis
+- Identifier Removal
+- Date Variable Removal
+- High Missing Value Removal
+- Low Variance Filtering
+- Correlation Analysis
+- Variance Inflation Factor (VIF)
+- Feature Selection
+- Missing Value Treatment
+- Outlier Treatment
+- Linear Regression Baseline
+- LightGBM Regression
+- XGBoost Regression
+- Random Forest Regression
+- Yeo–Johnson Target Transformation
+- Model Evaluation
+- Model Comparison
 
-## Recorded performance
+---
 
-### Original target
+## 📈 Recorded Performance
+
+### Original Target
 
 | Model | Test MAE | Test RMSE | Test R² |
 |---|---:|---:|---:|
@@ -60,16 +63,46 @@ Models evaluated:
 | XGBoost | 12.93 | 23.14 | 0.495 |
 | Random Forest | 12.79 | 23.24 | 0.490 |
 
-### Transformed target
+### Yeo–Johnson Transformed Target
 
 | Model | Test MAE | Test RMSE | Test R² |
 |---|---:|---:|---:|
 | Linear Regression | 0.51 | 0.75 | 0.442 |
 | LightGBM | 0.43 | 0.68 | 0.546 |
 
-The transformed-target metrics are measured in transformed space. Predictions should be inverse-transformed before MAE and RMSE are interpreted in days.
+> The transformed-target MAE and RMSE values are measured in transformed space. Predictions should be inverse-transformed before these errors are interpreted in days.
 
-## Technologies used
+---
+
+## 💡 Key Finding
+
+The recorded LightGBM test R² improved from approximately **0.506** on the original target to **0.546** after applying the Yeo–Johnson target transformation.
+
+This suggests that reducing target skew improved the model's ability to explain variation in invoice payment delay.
+
+For a complete business comparison, transformed predictions should be converted back to the original days-past-due scale before calculating MAE and RMSE.
+
+---
+
+## 🔍 Key Techniques
+
+- Exploratory Data Analysis
+- Feature Selection
+- Low Variance Filtering
+- Correlation Analysis
+- Variance Inflation Factor
+- Missing Value Treatment
+- Outlier Treatment
+- Linear Regression
+- LightGBM Regression
+- XGBoost Regression
+- Random Forest Regression
+- Yeo–Johnson Target Transformation
+- Regression Model Evaluation
+
+---
+
+## 🛠 Technologies Used
 
 - Python
 - Pandas
@@ -82,10 +115,13 @@ The transformed-target metrics are measured in transformed space. Predictions sh
 - SciPy
 - Jupyter Notebook
 
-## Repository structure
+---
+
+## 📁 Repository Structure
 
 ```text
 invoice-payment-risk-regression/
+│
 ├── Invoice_Payment_Risk_Regression.ipynb
 ├── README.md
 ├── requirements.txt
@@ -95,9 +131,11 @@ invoice-payment-risk-regression/
 └── outputs/
 ```
 
-## Dataset
+---
 
-The source datasets are not included.
+## 📊 Dataset
+
+The source datasets are not included in this repository.
 
 Place the original files at:
 
@@ -106,25 +144,30 @@ data/train_data_shuffle.csv
 data/test_data_shuffle.csv
 ```
 
-The second modelling approach reads prepared datasets from:
+The transformed-target approach reads prepared datasets from:
 
 ```text
 outputs/df_train_shuffle_data.csv
 outputs/df_test_shuffle_data.csv
 ```
 
-Do not upload these files if they are proprietary or confidential.
+Do not upload these files if they contain proprietary, confidential, or company-provided data.
 
-## Key finding
+---
 
-The recorded LightGBM R² increased from approximately **0.506** on the original target to **0.546** after Yeo–Johnson transformation. A complete comparison should inverse-transform predictions and calculate errors on the original days-past-due scale.
+## 🚀 Future Improvements
 
-## Future improvements
-
-- Inverse-transform predictions for business-readable metrics
+- Inverse-transform predictions for business-readable error metrics
 - Build a leakage-safe preprocessing pipeline
 - Add cross-validation
 - Perform systematic hyperparameter tuning
-- Add SHAP explainability
-- Segment residual analysis
-- Streamlit deployment
+- Compare additional regression algorithms
+- Add SHAP-based model explainability
+- Perform residual analysis across customer and invoice segments
+- Deploy the model using Streamlit
+
+---
+
+## 📝 Note
+
+This repository combines two regression approaches in one structured notebook to compare model performance before and after target transformation. The original modelling experiments are preserved to demonstrate the full analysis and decision-making process.
